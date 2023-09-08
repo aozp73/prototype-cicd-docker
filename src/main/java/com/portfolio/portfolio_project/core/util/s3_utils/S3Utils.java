@@ -31,10 +31,6 @@ public class S3Utils {
     private String staticRegion;
 
     public List<String> uploadImageToS3(String imageData, String imageName, String contentType, String keyword) throws Exception500 {
-        System.out.println("테스트 : " + imageData);
-        System.out.println("테스트 : " + imageName);
-        System.out.println("테스트 : " + contentType);
-        System.out.println("테스트 : " + keyword);
         MultipartFile img_multipartFile;
         try {
             img_multipartFile = BASE64DecodedMultipartFile
