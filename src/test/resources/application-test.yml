@@ -11,46 +11,56 @@ spring:
       prefix: /WEB-INF/view/
       suffix: .jsp 
 
-# portfolio_test 사용
   datasource:
-    url: jdbc:mysql://localhost:3306/portfolio_test?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC
+    url: jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_TEST_DB_NAME}?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 1234
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
 
   data:
     mongodb:
-      uri: mongodb://localhost:27017/portfolio_test
+      uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${EC2_HOSTNAME}:${EC2_PORT}/${MONGO_TEST_DB_NAME}?authSource=admin
 
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: create
-      # ddl-auto: update
-    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
   output:
     ansi:
       enabled: always
 
+# S3 설정
 cloud:
   aws:
     region:
-      static: ${static}
+      static: ${STATIC}
       auto: false # false면 자동으로 리전을 선택하지 않고, static 설정을 따름
     s3:
-      bucket: ${bucket}
+      bucket: ${BUCKET}
     credentials:
-      access-key: ${access-key}
-      secret-key: ${secret-key}
+      access-key: ${S3_AWS_ACCESS_KEY}
+      secret-key: ${S3_AWS_SECRET_KEY}
     stack:
       auto: false # false로 설정된 경우, CloudFormation 스택은 자동으로 생성되거나 관리되지 않음
 
-name: ${MY.JWT}
+# Sentry 설정
+sentry:
+  dsn: ${SENTRY_DSN}
+  enable-tracing: true     # 성능 데이터 전송
+  send-default-pii: true   # 사용자의 정보 포함
+  environment: development # 필터링에 사용
+  logging:
+    minimum-event-level: "WARN"      # 명시 레벨 이상의 로그 이벤트를 Sentry로 전송
+    minimum-breadcrumb-level: "INFO" # INFO 레벨 이상의 breadcrumb만 기록
+  sample-rate: 1 # 이벤트 샘플링 비율 설정 (1: 100%, 0.1: 10% 등) 
 
-# 테스트에 debug 로그로 응답값을 보려고 하였으나, 다른 정보가 너무 많아 info로 확인
-# logging:
-#   level: 
-#     root: debug
+name: ${MY_JWT}
+
+buckets: ${BUCKET}
+
+statics: ${STATIC}

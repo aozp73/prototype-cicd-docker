@@ -3,7 +3,7 @@ server:
     encoding:
       charset: utf-8
       force: true
-  port: 8080
+  port: 5000
 
 spring:
   mvc:
@@ -12,7 +12,7 @@ spring:
       suffix: .jsp 
 
   datasource:
-    url: jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC
+    url: jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
@@ -43,11 +43,11 @@ cloud:
     s3:
       bucket: ${BUCKET}
     credentials:
-      access-key: ${AWS_ACCESS_KEY}
-      secret-key: ${AWS_SECRET_KEY}
+      access-key: ${S3_AWS_ACCESS_KEY}
+      secret-key: ${S3_AWS_SECRET_KEY}
     stack:
       auto: false
-
+ 
 # Sentry 설정
 sentry:
   dsn: ${SENTRY_DSN}
@@ -60,3 +60,7 @@ sentry:
   sample-rate: 1 
 
 name: ${MY_JWT}
+
+buckets: ${BUCKET}
+
+statics: ${STATIC}

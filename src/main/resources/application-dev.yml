@@ -12,7 +12,7 @@ spring:
       suffix: .jsp 
 
   datasource:
-    url: jdbc:mysql://localhost:3306/portfolio?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/portfolio?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 1234
@@ -48,8 +48,8 @@ cloud:
     s3:
       bucket: ${BUCKET}
     credentials:
-      access-key: ${AWS_ACCESS_KEY}
-      secret-key: ${AWS_SECRET_KEY}
+      access-key: ${S3_AWS_ACCESS_KEY}
+      secret-key: ${S3_AWS_SECRET_KEY}
     stack:
       auto: false # false로 설정된 경우, CloudFormation 스택은 자동으로 생성되거나 관리되지 않음
 
@@ -64,5 +64,8 @@ sentry:
     minimum-breadcrumb-level: "INFO" # INFO 레벨 이상의 breadcrumb만 기록
   sample-rate: 1 # 이벤트 샘플링 비율 설정 (1: 100%, 0.1: 10% 등) 
 
-
 name: ${MY_JWT}
+
+buckets: ${BUCKET}
+
+statics: ${STATIC}
