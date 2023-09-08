@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
@@ -35,8 +36,11 @@ import org.springframework.util.MultiValueMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portfolio.portfolio_project.AbstractIntegrationTest;
 import com.portfolio.portfolio_project.core.jwt.MyJwtProvider;
+import com.portfolio.portfolio_project.domain.jpa.myproject.enums.ProjectRole;
 import com.portfolio.portfolio_project.domain.jpa.myproject.my_project.MyProject;
 import com.portfolio.portfolio_project.domain.jpa.myproject.my_project.MyProjectRepository;
+import com.portfolio.portfolio_project.domain.jpa.myproject.my_project_role_code.MyProjectRoleCode;
+import com.portfolio.portfolio_project.domain.jpa.myproject.my_project_role_code.MyProjectRoleCodeRepository;
 import com.portfolio.portfolio_project.domain.jpa.user.User;
 import com.portfolio.portfolio_project.integration_test.dummy.MyProjectDummy;
 import com.portfolio.portfolio_project.web.myproject.MyProjectDTO_In;
@@ -62,10 +66,13 @@ public class MyProjectIntegrationTest extends AbstractIntegrationTest {
     private MyJwtProvider myJwtProvider;
     @Autowired
     private MyProjectRepository myProjectRepository;
+    @Autowired
+    private MyProjectRoleCodeRepository myProjectRoleCodeRepository;
 
     @BeforeEach
     public void init() {
             em.createNativeQuery("ALTER TABLE my_project_tb AUTO_INCREMENT = 1").executeUpdate();
+            em.createNativeQuery("ALTER TABLE my_project_role_code_tb AUTO_INCREMENT = 1").executeUpdate();
             setup();
     }
 
@@ -205,12 +212,22 @@ public class MyProjectIntegrationTest extends AbstractIntegrationTest {
     // ===========  Entity 세팅  =================================================
 
     public void setup(){
-            List<MyProject> myProjects = new ArrayList<>();
-            myProjects.add(MyProjectDummy.newMyProject1());
-            myProjects.add(MyProjectDummy.newMyProject2());
-            myProjectRepository.saveAll(myProjects);
+        List<MyProject> myProjects = new ArrayList<>();
+        myProjects.add(MyProjectDummy.newMyProject1());
+        myProjects.add(MyProjectDummy.newMyProject2());
+        myProjectRepository.saveAll(myProjects);
 
-            em.flush();
-            em.clear();
+        for (ProjectRole role : ProjectRole.values()) {
+        MyProjectRoleCode myProjectRoleCode = MyProjectRoleCode.builder()
+                .projectRole(role)
+                .build();
+        Optional<MyProjectRoleCode> myProjectRoleCodeCheck = myProjectRoleCodeRepository.findByProjectRole(role);
+        if (!myProjectRoleCodeCheck.isPresent()) {
+                myProjectRoleCodeRepository.save(myProjectRoleCode);
+        }
+        }
+
+        em.flush();
+        em.clear();
     }
 }
