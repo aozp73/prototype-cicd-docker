@@ -1,0 +1,66 @@
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+  port: 5000
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp 
+
+  datasource:
+    url: jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${EC2_HOSTNAME}:${EC2_PORT}/${MONGO_DB_NAME}?authSource=admin
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+  output:
+    ansi:
+      enabled: always
+
+# S3 설정
+cloud:
+  aws:
+    region:
+      static: ${STATIC}
+      auto: false
+    s3:
+      bucket: ${BUCKET}
+    credentials:
+      access-key: ${S3_AWS_ACCESS_KEY}
+      secret-key: ${S3_AWS_SECRET_KEY}
+    stack:
+      auto: false
+ 
+# Sentry 설정
+sentry:
+  dsn: ${SENTRY_DSN}
+  enable-tracing: true
+  send-default-pii: true
+  environment: development
+  logging:
+    minimum-event-level: "WARN"
+    minimum-breadcrumb-level: "INFO" 
+  sample-rate: 1 
+
+name: ${MY_JWT}
+
+buckets: ${BUCKET}
+
+statics: ${STATIC}

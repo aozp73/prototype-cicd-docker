@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
@@ -70,6 +71,7 @@ public class MySkillIntegrationTest extends AbstractIntegrationTest {
     @BeforeEach
     public void init() {
             em.createNativeQuery("ALTER TABLE my_skill_tb AUTO_INCREMENT = 1").executeUpdate();
+            em.createNativeQuery("ALTER TABLE my_skill_type_code_tb AUTO_INCREMENT = 1").executeUpdate();
             setup();
     }
 
@@ -139,6 +141,16 @@ public class MySkillIntegrationTest extends AbstractIntegrationTest {
     // ===========  Entity 세팅  =================================================
 
     public void setup(){
+            for (SkillType type : SkillType.values()) {
+                MySkillTypeCode mySkillTypeCode = MySkillTypeCode.builder()
+                    .skillType(type)
+                    .build();
+                Optional<MySkillTypeCode> mySkillTypeCodeCheck = mySkillTypeCodeRepository.findBySkillType(type);
+                if (!mySkillTypeCodeCheck.isPresent()) {
+                    mySkillTypeCodeRepository.save(mySkillTypeCode);
+                }
+            }
+            
             MySkillTypeCode backEnd = mySkillTypeCodeRepository.findById(1L).get();
             MySkillTypeCode frontEnd = mySkillTypeCodeRepository.findById(2L).get();
 
@@ -147,6 +159,7 @@ public class MySkillIntegrationTest extends AbstractIntegrationTest {
             mySkills.add(MySkillDummy.newSkill2(frontEnd));
 
             mySkillRepository.saveAll(mySkills);
+
 
             em.flush();
             em.clear();
