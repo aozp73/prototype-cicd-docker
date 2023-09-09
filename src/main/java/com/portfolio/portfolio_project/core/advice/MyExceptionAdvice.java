@@ -16,7 +16,7 @@ import io.sentry.Sentry;
 
 @RestControllerAdvice
 public class MyExceptionAdvice {
-
+ 
     @ExceptionHandler(Exception400.class)
     public ResponseEntity<?> badRequest(Exception400 e) {
         Sentry.captureException(e);
