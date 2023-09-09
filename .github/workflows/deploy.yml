@@ -43,5 +43,6 @@ jobs:
     steps:
     - name: Deploy to EC2
       run: |
+        mkdir -p ~/.ssh
         ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
         ssh -i ${{ secrets.EC2_SSH_KEY }} ec2-user@${{ secrets.EC2_HOST }} "docker-compose pull ${{ secrets.TAG_VERSION }} && docker-compose up -d"
