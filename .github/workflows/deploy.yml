@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
 
     - name: Setup .env file
       run: |
@@ -17,14 +19,12 @@ jobs:
         echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
         echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
         echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+        echo "TAG_VERSION=${{ secrets.TAG_VERSION }}" >> .env
     - name: Debugging1
       run: |
         echo "Debugging Starts"
         cat .env
         echo "Debugging Ends"
-
-    - name: Checkout
-      uses: actions/checkout@v3
 
     - name: Login to DockerHub
       run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
