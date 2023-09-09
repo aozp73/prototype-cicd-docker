@@ -50,4 +50,4 @@ jobs:
       run: |
         mkdir -p ~/.ssh
         ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-        ssh -i ec2_ssh_key.pem ec2-user@${{ secrets.EC2_HOST }} "docker-compose pull ${{ secrets.TAG_VERSION }} && docker-compose up -d"
+        ssh -v -i ec2_ssh_key.pem ec2-user@${{ secrets.EC2_HOST }} "docker-compose pull ${{ secrets.TAG_VERSION }} && docker-compose up -d"
