@@ -20,4 +20,4 @@ services:
       - network
 
 networks:
-  network:
+  network: 
