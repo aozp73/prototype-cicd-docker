@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Debugging1
+      run: |
+        echo "Debugging Starts"
+        cat .env
+        echo "Debugging Ends"
     - name: Setup .env file
       run: |
         echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
@@ -23,6 +28,11 @@ jobs:
     - name: Login to DockerHub
       run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
+    - name: Debugging2
+      run: |
+        echo "Debugging Starts"
+        cat .env
+        echo "Debugging Ends"
     - name: Build and push Docker image
       run: |
         docker-compose build
