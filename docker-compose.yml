@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     restart: always
 
-    image: ${DOCKERHUB-USERNAME}/portfolio-db-mysql:${TAG_VERSION}
+    image: ${DOCKERHUB_USERNAME}/portfolio-db-mysql:${TAG_VERSION}
     volumes:
       - ./db/mysql/store:/var/lib/mysql
     environment:

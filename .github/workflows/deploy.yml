@@ -20,7 +20,7 @@ jobs:
         echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
         echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
         echo "TAG_VERSION=${{ secrets.TAG_VERSION }}" >> .env
-        echo "DOCKERHUB-USERNAME=${{ secrets.DOCKERHUB-USERNAME }}" >> .env
+        echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> .env
 
     - name: Debugging1
       run: |
