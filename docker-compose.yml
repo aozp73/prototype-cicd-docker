@@ -1,0 +1,23 @@
+version: "3"
+services:
+  database-mysql:
+    build:
+      context: ./db/mysql
+      dockerfile: Dockerfile
+    restart: always
+
+    image: ${DOCKERHUB-USERNAME}/portfolio-db-mysql:${TAG_VERSION}
+    volumes:
+      - ./db/mysql/store:/var/lib/mysql
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    ports:
+      - "3306:3306"
+    networks:
+      - network
+
+networks:
+  network: 
