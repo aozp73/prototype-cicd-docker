@@ -13,14 +13,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: MySQL 
+    - name: Set MySQL 
       uses: mirromutth/mysql-action@v1.1
       with:
         host port: 3306
         container port: 3306
         mysql database: 'portfolio_test'
         mysql root password: 1234
-    - name: Start MongoDB
+    - name: Set MongoDB
       uses: supercharge/mongodb-github-action@1.6.0
       with:
         mongodb-version: '4.4'
@@ -56,14 +56,12 @@ jobs:
         docker-compose build > build.log 2>&1 || exit 1
         docker-compose push
 
-    - name: Upload Test Reports and Build Logs
+    - name: Upload logs as artifact
       if: failure()
       uses: actions/upload-artifact@v2
       with:
-        name: test-reports-and-logs
-        path: |
-          app/build/reports/tests/test/
-          build.log
+        name: app-logs
+        path: /path/to/logs/myapp.log
 
   Deploy-DB:
     runs-on: ubuntu-latest
