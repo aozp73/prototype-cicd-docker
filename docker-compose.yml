@@ -1,29 +1,12 @@
 version: "3"
 services:
 
-  database-mysql:
-    build:
-      context: ./db/mysql
-      dockerfile: Dockerfile
-    restart: always
-    container_name: mysql
-    image: ${DOCKERHUB_USERNAME}/portfolio-db-mysql:${TAG_VERSION}
-    volumes:
-      - ./db/mysql/store:/var/lib/mysql
-    environment:
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-    ports:
-      - "3306:3306"
-
   database-mongodb:
     build:
       context: ./db/mongodb
       dockerfile: Dockerfile
     restart: always
-    container_name: mongodb
+    container_name: database-mongodb
     image: ${DOCKERHUB_USERNAME}/portfolio-db-mongodb:${TAG_VERSION}
     volumes:
       - ./db/mongodb/store:/data/db
@@ -34,29 +17,60 @@ services:
       - MONGO_INITDB_USERNAME=${MONGO_INITDB_USERNAME}
       - MONGO_INITDB_USER_PASSWORD=${MONGO_INITDB_USER_PASSWORD}
     ports:
-      - "27017:27017"
+      - "27019:27017"
+
+    networks:
+      - network
+
+  database-mysql:
+    build:
+      context: ./db/mysql
+      dockerfile: Dockerfile
+    restart: always
+    container_name: database-mysql
+    image: ${DOCKERHUB_USERNAME}/portfolio-db-mysql:${TAG_VERSION}
+    volumes:
+      - ./db/mysql/store:/var/lib/mysql
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    ports:
+      - "3307:3307"
+    depends_on:
+      - database-mongodb
+    networks:
+      - network
+
+
 
   spring_app:
     build:
       context: ./server
       dockerfile: Dockerfile 
-    restart: always
     container_name: server
     image: ${DOCKERHUB_USERNAME}/portfolio-server:${TAG_VERSION}
     ports:
       - "8080:8080"
+    depends_on:
+      - database-mysql
     environment:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MONGO_INITDB_USERNAME=${MONGO_INITDB_USERNAME}
       - MONGO_INITDB_USER_PASSWORD=${MONGO_INITDB_USER_PASSWORD}
       - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-
       - STATIC=${STATIC}
       - BUCKET=${BUCKET}
       - S3_AWS_ACCESS_KEY=${S3_AWS_ACCESS_KEY}
       - S3_AWS_SECRET_KEY=${S3_AWS_SECRET_KEY}
       - SENTRY_DSN=${SENTRY_DSN}
       - MY_JWT=${MY_JWT}
+    networks:
+      - network
+
+networks:
+  network:
