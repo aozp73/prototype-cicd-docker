@@ -13,7 +13,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Set MySQL
+    - name: MySQL 
       uses: mirromutth/mysql-action@v1.1
       with:
         host port: 3306
@@ -41,6 +41,13 @@ jobs:
         echo "MONGO_INITDB_USERNAME=${{ secrets.MONGO_INITDB_USERNAME }}" >> .env
         echo "MONGO_INITDB_USER_PASSWORD=${{ secrets.MONGO_INITDB_USER_PASSWORD }}" >> .env
 
+        echo "STATIC=${{ secrets.STATIC }}" >> .env
+        echo "BUCKET=${{ secrets.BUCKET }}" >> .env
+        echo "S3_AWS_ACCESS_KEY=${{ secrets.S3_AWS_ACCESS_KEY }}" >> .env
+        echo "S3_AWS_SECRET_KEY=${{ secrets.S3_AWS_SECRET_KEY }}" >> .env
+        echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
+        echo "MY_JWT=${{ secrets.MY_JWT }}" >> .env
+
     - name: Login to DockerHub
       run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
@@ -48,6 +55,13 @@ jobs:
       run: |
         docker-compose build
         docker-compose push
+
+    - name: Archive test reports
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-reports
+        path: ./build/reports/tests/test/
 
   Deploy-DB:
     runs-on: ubuntu-latest
