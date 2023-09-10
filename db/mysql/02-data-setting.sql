@@ -1,1 +1,1 @@
-INSERT INTO tes(name) VALUES('테스트');
+INSERT INTO tes(name) VALUES('테스트22');
