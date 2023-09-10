@@ -2,8 +2,7 @@
 FROM gradle:7.4-jdk-alpine AS builder
 WORKDIR /app
 COPY . /app
-RUN mkdir -p /var/log/app && chown -R nobody:nogroup /var/log/app
-RUN gradle clean build --parallel --stacktrace
+RUN ./gradlew clean build -x test
 
 FROM openjdk:11.0-slim
 WORKDIR /app
