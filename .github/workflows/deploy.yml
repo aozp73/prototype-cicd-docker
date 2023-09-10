@@ -41,13 +41,11 @@ jobs:
     needs: build-and-push
 
     steps:
-    - name: Create SSH key file
-      run: |
-        echo "${{ secrets.EC2_SSH_KEY }}" > ec2_ssh_key.pem
-        chmod 600 ec2_ssh_key.pem
-
     - name: Deploy to EC2
-      run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-        ssh -v -i ec2_ssh_key.pem ec2-user@${{ secrets.EC2_HOST }} "sudo docker-compose pull ${{ secrets.TAG_VERSION }} && docker-compose up -d"
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: | 
+          sudo docker-compose pull ${{ secrets.TAG_VERSION }} && docker-compose up -d
