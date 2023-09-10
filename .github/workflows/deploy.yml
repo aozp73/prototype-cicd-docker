@@ -13,6 +13,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Set MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        host port: 3306
+        container port: 3306
+        mysql database: 'portfolio_test'
+        mysql root password: 1234
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.6.0
+      with:
+        mongodb-version: '4.4'
+
     - name: Setup .env file
       run: |
         echo "TAG_VERSION=${{ secrets.TAG_VERSION }}" >> .env
@@ -74,6 +86,13 @@ jobs:
           echo "MONGO_INITDB_DATABASE=${{ secrets.MONGO_INITDB_DATABASE }}" >> .env
           echo "MONGO_INITDB_USERNAME=${{ secrets.MONGO_INITDB_USERNAME }}" >> .env
           echo "MONGO_INITDB_USER_PASSWORD=${{ secrets.MONGO_INITDB_USER_PASSWORD }}" >> .env
+
+          echo "STATIC=${{ secrets.STATIC }}" >> .env
+          echo "BUCKET=${{ secrets.BUCKET }}" >> .env
+          echo "S3_AWS_ACCESS_KEY=${{ secrets.S3_AWS_ACCESS_KEY }}" >> .env
+          echo "S3_AWS_SECRET_KEY=${{ secrets.S3_AWS_SECRET_KEY }}" >> .env
+          echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
+          echo "MY_JWT=${{ secrets.MY_JWT }}" >> .env
 
           sudo docker-compose pull && sudo docker-compose up -d
 
