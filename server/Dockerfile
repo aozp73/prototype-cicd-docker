@@ -2,7 +2,7 @@
 FROM gradle:7.4-jdk-alpine AS builder
 WORKDIR /app
 COPY . /app
-RUN gradle clean build --parallel
+RUN gradle clean build --parallel --stacktrace
 
 FROM openjdk:11.0-slim
 WORKDIR /app
