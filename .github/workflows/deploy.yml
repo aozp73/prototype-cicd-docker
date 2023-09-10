@@ -53,15 +53,17 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker-compose build
+        docker-compose build > build.log 2>&1 || exit 1
         docker-compose push
 
-    - name: Upload Test Reports
+    - name: Upload Test Reports and Build Logs
       if: failure()
       uses: actions/upload-artifact@v2
       with:
-        name: test-reports
-        path: app/build/reports/tests/test/
+        name: test-reports-and-logs
+        path: |
+          app/build/reports/tests/test/
+          build.log
 
   Deploy-DB:
     runs-on: ubuntu-latest
