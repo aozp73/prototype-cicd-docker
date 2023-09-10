@@ -44,8 +44,8 @@ jobs:
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v0.1.6
       with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
         script: | 
           sudo docker-compose pull ${{ secrets.TAG_VERSION }} && docker-compose up -d
