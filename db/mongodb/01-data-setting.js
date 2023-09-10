@@ -1,0 +1,1 @@
+db.testCollection.insert({ name: '테스트' });
