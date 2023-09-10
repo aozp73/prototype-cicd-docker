@@ -66,4 +66,4 @@ statics: ${STATIC}
 
 logging:
   file:
-    name: /var/log/myapp.log
+    name: /var/log/app/myapp.log
