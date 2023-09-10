@@ -17,7 +17,7 @@ services:
       - MONGO_INITDB_USERNAME=${MONGO_INITDB_USERNAME}
       - MONGO_INITDB_USER_PASSWORD=${MONGO_INITDB_USER_PASSWORD}
     ports:
-      - "27019:27017"
+      - "27017:27017"
 
     networks:
       - network
@@ -37,7 +37,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     ports:
-      - "3307:3307"
+      - "3306:3306"
     depends_on:
       - database-mongodb
     networks:
