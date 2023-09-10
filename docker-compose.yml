@@ -1,11 +1,12 @@
 version: "3"
 services:
+
   database-mysql:
     build:
       context: ./db/mysql
       dockerfile: Dockerfile
     restart: always
-
+    container_name: mysql
     image: ${DOCKERHUB_USERNAME}/portfolio-db-mysql:${TAG_VERSION}
     volumes:
       - ./db/mysql/store:/var/lib/mysql
@@ -16,8 +17,21 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     ports:
       - "3306:3306"
-    networks:
-      - network
 
-networks:
-  network: 
+  database-mongodb:
+    build:
+      context: ./db/mongodb
+      dockerfile: Dockerfile
+    restart: always
+    container_name: mongodb
+    image: ${DOCKERHUB_USERNAME}/portfolio-db-mongodb:${TAG_VERSION}
+    volumes:
+      - ./db/mongodb/store:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_USERNAME=${MONGO_INITDB_USERNAME}
+      MONGO_INITDB_USER_PASSWORD=${MONGO_INITDB_USER_PASSWORD}
+    ports:
+      - "27017:27017"
