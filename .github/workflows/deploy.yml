@@ -56,12 +56,12 @@ jobs:
         docker-compose build
         docker-compose push
 
-    - name: Archive test reports
+    - name: Upload Test Reports
       if: failure()
       uses: actions/upload-artifact@v2
       with:
         name: test-reports
-        path: ./build/reports/tests/test/
+        path: app/build/reports/tests/test/
 
   Deploy-DB:
     runs-on: ubuntu-latest
@@ -90,7 +90,7 @@ jobs:
 
           echo "TAG_VERSION=${{ secrets.TAG_VERSION }}" >> .env
           echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> .env
-          
+
           echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
           echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
           echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
