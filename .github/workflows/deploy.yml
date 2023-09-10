@@ -13,18 +13,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Set MySQL 
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        host port: 3306
-        container port: 3306
-        mysql database: 'portfolio_test'
-        mysql root password: 1234
-    - name: Set MongoDB
-      uses: supercharge/mongodb-github-action@1.6.0
-      with:
-        mongodb-version: '4.4'
-
     - name: Setup .env file
       run: |
         echo "TAG_VERSION=${{ secrets.TAG_VERSION }}" >> .env

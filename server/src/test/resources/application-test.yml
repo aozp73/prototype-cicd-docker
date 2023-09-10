@@ -63,7 +63,3 @@ name: ${MY_JWT}
 buckets: ${BUCKET}
 
 statics: ${STATIC}
-
-logging:
-  file:
-    name: /var/log/app/myapp.log

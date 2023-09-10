@@ -43,8 +43,6 @@ services:
     restart: always
     container_name: mongodb
     image: ${DOCKERHUB_USERNAME}/portfolio-server:${TAG_VERSION}
-    volumes:
-      - "/path/on/host/to/store/logs:/var/log/app"
     ports:
       - "8080:8080"
     environment:
