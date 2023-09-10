@@ -41,7 +41,7 @@ services:
       context: ./server
       dockerfile: Dockerfile 
     restart: always
-    container_name: mongodb
+    container_name: server
     image: ${DOCKERHUB_USERNAME}/portfolio-server:${TAG_VERSION}
     ports:
       - "8080:8080"
