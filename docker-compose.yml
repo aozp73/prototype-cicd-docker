@@ -35,3 +35,18 @@ services:
       - MONGO_INITDB_USER_PASSWORD=${MONGO_INITDB_USER_PASSWORD}
     ports:
       - "27017:27017"
+
+  spring_app:
+    build:
+      context: ./server
+      dockerfile: Dockerfile 
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    
+      - MONGO_INITDB_USERNAME=${MONGO_INITDB_USERNAME}
+      - MONGO_INITDB_USER_PASSWORD=${MONGO_INITDB_USER_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
