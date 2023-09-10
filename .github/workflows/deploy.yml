@@ -66,5 +66,5 @@ jobs:
           echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
           echo "TAG_VERSION=${{ secrets.TAG_VERSION }}" >> .env
           echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> .env
-          
-          sudo docker-compose pull ${{ secrets.TAG_VERSION }} && docker-compose up -d
+
+          sudo docker-compose pull && docker-compose up -d
