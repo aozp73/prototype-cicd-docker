@@ -22,12 +22,6 @@ jobs:
         echo "TAG_VERSION=${{ secrets.TAG_VERSION }}" >> .env
         echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> .env
 
-    - name: Debugging1
-      run: |
-        echo "Debugging Starts"
-        cat .env
-        echo "Debugging Ends"
-
     - name: Login to DockerHub
       run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
