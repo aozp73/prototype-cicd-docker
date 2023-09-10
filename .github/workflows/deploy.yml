@@ -61,7 +61,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: app-logs
-        path: /path/to/logs/myapp.log
+        path: /path/on/host/to/store/logs/myapp.log
 
   Deploy-DB:
     runs-on: ubuntu-latest
